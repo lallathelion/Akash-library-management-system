@@ -1,0 +1,119 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Book {
+public:
+    int id;
+    string title;
+    string author;
+
+    Book(int bookId, string bookTitle, string bookAuthor) {
+        id = bookId;
+        title = bookTitle;
+        author = bookAuthor;
+    }
+
+    void display() {
+        cout << "ID: " << id << ", Title: " << title << ", Author: " << author << endl;
+    }
+};
+
+class LibraryManagementSystem {
+private:
+    vector<Book> books;
+
+public:
+    void addBook(int id, string title, string author) {
+        books.push_back(Book(id, title, author));
+        cout << "Book added successfully!" << endl;
+    }
+
+    void removeBook(int id) {
+        for (auto it = books.begin(); it != books.end(); ++it) {
+            if (it->id == id) {
+                books.erase(it);
+                cout << "Book removed successfully!" << endl;
+                return;
+            }
+        }
+        cout << "Book with ID " << id << " not found!" << endl;
+    }
+
+    void searchBook(int id) {
+        for (const auto& book : books) {
+            if (book.id == id) {
+                cout << "Book found: ";
+                book.display();
+                return;
+            }
+        }
+        cout << "Book with ID " << id << " not found!" << endl;
+    }
+
+    void displayAllBooks() {
+        if (books.empty()) {
+            cout << "No books available in the library." << endl;
+            return;
+        }
+        cout << "Books in the library:" << endl;
+        for (const auto& book : books) {
+            book.display();
+        }
+    }
+};
+
+int main() {
+    LibraryManagementSystem library;
+    int choice, id;
+    string title, author;
+
+    while (true) {
+        cout << "\nLibrary Management System\n";
+        cout << "1. Add Book\n";
+        cout << "2. Remove Book\n";
+        cout << "3. Search Book\n";
+        cout << "4. Display All Books\n";
+        cout << "5. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter Book ID: ";
+                cin >> id;
+                cin.ignore();
+                cout << "Enter Book Title: ";
+                getline(cin, title);
+                cout << "Enter Book Author: ";
+                getline(cin, author);
+                library.addBook(id, title, author);
+                break;
+
+            case 2:
+                cout << "Enter Book ID to remove: ";
+                cin >> id;
+                library.removeBook(id);
+                break;
+
+            case 3:
+                cout << "Enter Book ID to search: ";
+                cin >> id;
+                library.searchBook(id);
+                break;
+
+            case 4:
+                library.displayAllBooks();
+                break;
+
+            case 5:
+                cout << "Exiting Library Management System." << endl;
+                return 0;
+
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+    }
+}
